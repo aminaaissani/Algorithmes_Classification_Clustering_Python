@@ -21,6 +21,7 @@ print(set(y.tolist()))
 from sklearn import preprocessing
 x = preprocessing.scale(x)
 
+#Vérification des données
 iris.info()
 
 print("\nLa taille et la dimension des données", np.size(x), np.shape(x))
@@ -31,6 +32,7 @@ print("\nLes informations\n",iris.info)
 
 print("\nStatistiques descriptives\n",iris.describe())
 
+#Appliquer le calssificateur KNN sur les données iris
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
@@ -61,6 +63,7 @@ from sklearn.model_selection import cross_val_score
 succes = cross_val_score(knn,x,y,cv=10,scoring='accuracy')
 print(succes)
 
+#Calcul précision, rappel et f-mesure
 from sklearn.metrics import recall_score,average_precision_score,f1_score
 
 #La macro-moyenne calcule d'abord la précision et le rappel sur chaque classe i suivie d'un calcul de
@@ -80,6 +83,7 @@ print('Précision est: ',average_precision)
 f1_score=f1_score(y_test, y_pred,average='macro')
 print('F-mesure est: ',f1_score)
 
+#Calcul matrice de confusion
 from sklearn.metrics import confusion_matrix
 
 matrice_conf=confusion_matrix(y_test.argmax(axis=1), y_pred.argmax(axis=1))
