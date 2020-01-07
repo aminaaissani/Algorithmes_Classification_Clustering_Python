@@ -1,4 +1,4 @@
-!wget https://drive.google.com/open?id=1HLHm9WRZvAOkEERotIDr3tjloeAWrPdt -O Iris.csv
+#!wget https://drive.google.com/open?id=1HLHm9WRZvAOkEERotIDr3tjloeAWrPdt -O Iris.csv
 
 from sklearn.cluster import KMeans
 import matplotlib.pyplot as plt
@@ -38,9 +38,6 @@ feature_columns = ['SepalLengthCm', 'SepalWidthCm', 'PetalLengthCm','PetalWidthC
 X = df[feature_columns].values
 y = df['Species'].values
 
-# Deuxiéme Methode en Utilisant iloc
-# x = df.iloc[:,[1,2,3,4]].values
-# y = df.iloc[:,-1]
 
 """Transformer la sortie Species en numérique :
   0 : Iris setosa,
@@ -53,10 +50,7 @@ le = LabelEncoder()
 y = le.fit_transform(y)
 print(set(y.tolist()))
 
-"""Centrage réduction des données:
-
-pour éviter que variables à forte variance pèsent indûment sur les résultats
-"""
+#Centrage réduction des données:pour éviter que variables à forte variance pèsent indûment sur les résultats
 
 from sklearn import preprocessing
 X = preprocessing.scale(X)
@@ -71,11 +65,9 @@ plt.ylabel(y[1])
 plt.tight_layout()
 plt.show()
 
-"""Pour le choix d'un nombre optimal de clusters,On s'est basé sur deux méthode du calcul :
-intertie et la silhouette.
+#Pour le choix d'un nombre optimal de clusters,On s'est basé sur deux méthode du calcul :intertie et la silhouette.
 
-Premiere Methode : inertie.
-"""
+#Premiere Methode : inertie.
 
 from sklearn.cluster import KMeans
 c = []
@@ -91,9 +83,9 @@ plt.xlabel('K')
 plt.ylabel('C') 
 plt.show()
 
-"""Deuxieme Methode : silhouette.
-Le tracé de silhouette affiche une mesure de la proximité de chaque point d'un cluster avec les points des clusters voisins et fournit ainsi un moyen d'évaluer visuellement des paramètres tels que le nombre de clusters. Cette mesure a une plage de [-1, 1].
-"""
+#Deuxieme Methode : silhouette.
+#Le tracé de silhouette affiche une mesure de la proximité de chaque point d'un cluster avec les points des clusters voisins et fournit ainsi un moyen d'évaluer visuellement des paramètres tels que le nombre de clusters. Cette mesure a une plage de [-1, 1].
+
 
 from sklearn import metrics
 
@@ -112,9 +104,9 @@ plt.xlabel("nb of clusters")
 plt.plot(np.arange(2,13,1),d)
 plt.show()
 
-"""Selon les deux methodes le nombre optimal de clusters est le point représentant le coude. Ici le coude peut être représenté par K valant 3 ou 4.
-Nous prenons le nombre opimale de clusters = 3 et nous passons a l'application du modele.
-"""
+#Selon les deux methodes le nombre optimal de clusters est le point représentant le coude. Ici le coude peut être représenté par K valant 3 ou 4.
+#Nous prenons le nombre opimale de clusters = 3 et nous passons a l'application du modele.
+
 
 #On spécifie le paramètre init=k-means++, qui sélectionne les centres de cluster initiaux pour le clustering k-mean de 
 #manière intelligente pour accélérer la convergence. 
@@ -134,30 +126,23 @@ from sklearn.metrics.cluster import adjusted_rand_score
 score2 = adjusted_rand_score(y, ypred)
 print(score2)
 
-"""##Implémentation de CAH
+#Implémentation de CAH
 
-Définition:
-
-Importer les librairies necessaires
-"""
+#Importer les librairies necessaires
 
 from matplotlib import pyplot as plt
 from scipy.cluster.hierarchy import dendrogram, linkage
 import scipy.cluster.hierarchy as sch
 
-"""Générer la matrice des distance"""
-
 #générer la matrice des liens
 a = linkage(X,method='ward',metric='euclidean')
-
-"""Affichage du dendrogramme."""
 
 #affichage du dendrogramme
 plt.title("CAH")
 dendrogram(a,labels=df.index,orientation='left' ,color_threshold=12)
 plt.show()
 
-"""Découpage à t = 12 identifiants de 3 groupes"""
+#Découpage à t = 12 identifiants de 3 groupes
 
 groupes_cah = sch.fcluster(a,t=12,criterion='distance') 
 print(np.unique(groupes_cah).size, "groupes constitués")
@@ -165,16 +150,13 @@ print(np.unique(groupes_cah).size, "groupes constitués")
 score3 = adjusted_rand_score(y, groupes_cah)
 print(score3)
 
-"""Comparaison entre Kmeans et CAH."""
+#Comparaison entre Kmeans et CAH
 
 pd.crosstab(groupes_cah,kmeans.labels_)
 
-"""##Implémentation de GMM
+#Implémentation de GMM
 
-Définitions :
-
-Importation des librairies.
-"""
+#Importation des librairies.
 
 from sklearn.mixture import GaussianMixture
 
