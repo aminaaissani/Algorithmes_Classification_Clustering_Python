@@ -38,8 +38,10 @@ from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 #importation de metrics - utilisé pour les mesures de performances
 from sklearn.metrics import accuracy_score
-
+import matplotlib.pyplot as plt
 from sklearn.preprocessing import label_binarize
+
+
 #Utilisez label_binarize pour être indiquer que les classes sont de type multi-étiquettes
 y = label_binarize(y, classes=[0, 1, 2])
 
@@ -47,9 +49,33 @@ score=list()
 #subdivision des données – 75% pour l'entrainement et 25% pour le test, on mit shuffle vrai pour mélanger les données 
 x_train,x_test, y_train, y_test = train_test_split(x,y,test_size=0.25 ,shuffle='true')
 
+#Choix du k optimale
+score_k = []
+for i in range(1, 29):
+    knn = KNeighborsClassifier(n_neighbors=i)
+    knn.fit(X_train,np.ravel(Y_train))
+    Y_pred=knn.predict(X_test)
+    score_k.append(round(accuracy_score(Y_test,np.ravel(Y_pred)),4))
 
-#on pose k=3 car on a 3 classes de fleurs
-knn= KNeighborsClassifier(n_neighbors=3)
+# Graphe
+plt.plot(range(1, 29), score_k)
+plt.title('Nombre K')
+plt.xlabel('K')
+plt.ylabel('score') 
+plt.show()
+
+
+score_max=0
+k=0
+for i in range(len(score_k)):
+  if score_max < score_k[i]:
+     k=i+1
+     score_max=score_k[i]
+
+print('le k optimale est ',k, ' avec précision est:',score_max)
+
+
+knn= KNeighborsClassifier(n_neighbors=k)
 knn.fit(x_train,y_train)
 y_pred=knn.predict(x_test)
 
